@@ -1,0 +1,659 @@
+{
+  "contract_name": "VehicleRegistry",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "make",
+          "type": "string"
+        },
+        {
+          "name": "model",
+          "type": "string"
+        },
+        {
+          "name": "year",
+          "type": "string"
+        },
+        {
+          "name": "color",
+          "type": "string"
+        },
+        {
+          "name": "licensePlate",
+          "type": "string"
+        },
+        {
+          "name": "VIN",
+          "type": "string"
+        }
+      ],
+      "name": "RegisterVehicle",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "Balance",
+      "outputs": [
+        {
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "TransferOwnership",
+      "outputs": [],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "name": "Withdraw",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newCommission",
+          "type": "uint256"
+        }
+      ],
+      "name": "SetCommission",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "ChangeAdmin",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "NumberOfVehicles",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "vehicles",
+      "outputs": [
+        {
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "name": "make",
+          "type": "string"
+        },
+        {
+          "name": "model",
+          "type": "string"
+        },
+        {
+          "name": "year",
+          "type": "string"
+        },
+        {
+          "name": "color",
+          "type": "string"
+        },
+        {
+          "name": "licensePlate",
+          "type": "string"
+        },
+        {
+          "name": "VIN",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "admin",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "payable": false,
+      "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "VehicleRegistered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "OldOwner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "NewOwner",
+          "type": "address"
+        }
+      ],
+      "name": "VehicleTransferred",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000c57fe5b5b60008054600160a060020a03191633600160a060020a0316178155600355670de0b6b3a76400006001555b5b610b3e806100486000396000f300606060405236156100885763ffffffff60e060020a6000350416630cf8e1ba811461009e5780630ef678871461021f578063339d61ae1461024157806341c0e1b51461025a5780635b6b431d1461026c5780636ea5803114610293578063927cc064146102a85780639776adb9146102c6578063b8ba95fa146102e8578063f851a44014610602575b341561009057fe5b61009c5b60006000fd5b565b005b61009c600480803590602001908201803590602001908080601f0160208091040260200160405190810160405280939291908181526020018383808284375050604080516020601f89358b0180359182018390048302840183019094528083529799988101979196509182019450925082915084018382808284375050604080516020601f89358b0180359182018390048302840183019094528083529799988101979196509182019450925082915084018382808284375050604080516020601f89358b0180359182018390048302840183019094528083529799988101979196509182019450925082915084018382808284375050604080516020601f89358b0180359182018390048302840183019094528083529799988101979196509182019450925082915084018382808284375050604080516020601f89358b0180359182018390048302840183019094528083529799988101979196509182019450925082915084018382808284375094965061062e95505050505050565b005b341561022757fe5b61022f6107bd565b60408051918252519081900360200190f35b61009c600435600160a060020a03602435166107ea565b005b341561026257fe5b61009c6108a3565b005b341561027457fe5b61027f6004356108cf565b604080519115158252519081900360200190f35b341561029b57fe5b61009c600435610941565b005b34156102b057fe5b61009c600160a060020a0360043516610966565b005b34156102ce57fe5b61022f6109a1565b60408051918252519081900360200190f35b34156102f057fe5b6102fb6004356109a7565b60408051898152600160a060020a03891660208201526101009181018281528854600260001960018316158602019091160492820183905290916060830190608084019060a085019060c086019060e08701906101208801908e9080156103a35780601f10610378576101008083540402835291602001916103a3565b820191906000526020600020905b81548152906001019060200180831161038657829003601f168201915b505087810386528c54600260001961010060018416150201909116048082526020909101908d9080156104175780601f106103ec57610100808354040283529160200191610417565b820191906000526020600020905b8154815290600101906020018083116103fa57829003601f168201915b505087810385528b54600260001961010060018416150201909116048082526020909101908c90801561048b5780601f106104605761010080835404028352916020019161048b565b820191906000526020600020905b81548152906001019060200180831161046e57829003601f168201915b505087810384528a54600260001961010060018416150201909116048082526020909101908b9080156104ff5780601f106104d4576101008083540402835291602001916104ff565b820191906000526020600020905b8154815290600101906020018083116104e257829003601f168201915b505087810383528954600260001961010060018416150201909116048082526020909101908a9080156105735780601f1061054857610100808354040283529160200191610573565b820191906000526020600020905b81548152906001019060200180831161055657829003601f168201915b50508781038252885460026000196101006001841615020190911604808252602090910190899080156105e75780601f106105bc576101008083540402835291602001916105e7565b820191906000526020600020905b8154815290600101906020018083116105ca57829003601f168201915b50509e50505050505050505050505050505060405180910390f35b341561060a57fe5b6106126109eb565b60408051600160a060020a039092168252519081900360200190f35b6106366109fa565b6001543410156106465760006000fd5b60035480825233600160a060020a03908116602080850191825260408086018c8152606087018c9052608087018b905260a087018a905260c0870189905260e087018890526000958652600280845291909520865181559251600184018054600160a060020a031916919095161790935592518051859492936106ce93908501920190610a60565b50606082015180516106ea916003840191602090910190610a60565b5060808201518051610706916004840191602090910190610a60565b5060a08201518051610722916005840191602090910190610a60565b5060c0820151805161073e916006840191602090910190610a60565b5060e0820151805161075a916007840191602090910190610a60565b505060035460208084015160408051938452600160a060020a039091169183019190915280517f5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d579350918290030190a16003805460010190555b50505050505050565b6000805433600160a060020a039081169116146107da5760006000fd5b50600160a060020a033016315b90565b60006001543410156107fc5760006000fd5b60008381526002602052604090206001015433600160a060020a039081169116146108275760006000fd5b506000828152600260209081526040918290206001018054600160a060020a03858116600160a060020a0319831681179093558451878152911692810183905280840191909152915190917f52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0919081900360600190a15b505050565b60005433600160a060020a039081169116146108bf5760006000fd5b600054600160a060020a0316ff5b565b6000805433600160a060020a039081169116146108ec5760006000fd5b30600160a060020a0316318211156109045760006000fd5b60008054604051600160a060020a039091169184156108fc02918591818181858888f1935050505015156109385760006000fd5b5060015b919050565b60005433600160a060020a0390811691161461095d5760006000fd5b60018190555b50565b60005433600160a060020a039081169116146109825760006000fd5b60008054600160a060020a031916600160a060020a0383161790555b50565b60035481565b6002602081905260009182526040909120805460018201549092600160a060020a039091169190810190600381019060048101906005810190600681019060070188565b600054600160a060020a031681565b604080516101008101825260008082526020820152908101610a1a610adf565b8152602001610a27610adf565b8152602001610a34610adf565b8152602001610a41610adf565b8152602001610a4e610adf565b8152602001610a5b610adf565b905290565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f10610aa157805160ff1916838001178555610ace565b82800160010185558215610ace579182015b82811115610ace578251825591602001919060010190610ab3565b5b50610adb929150610af1565b5090565b60408051602081019091526000815290565b6107e791905b80821115610adb5760008155600101610af7565b5090565b905600a165627a7a72305820727398f03d0cac3576ff9099f534382e527b50f69f462cd6b1750e687a383ee10029",
+  "networks": {
+    "1496807470822": {
+      "events": {
+        "0x5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d57": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleRegistered",
+          "type": "event"
+        },
+        "0x52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "OldOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "NewOwner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x4a682ace5b92f4a5c6def49ba4aea4414270144e",
+      "updated_at": 1496807510790
+    },
+    "1496834118898": {
+      "events": {
+        "0x5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d57": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleRegistered",
+          "type": "event"
+        },
+        "0x52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "OldOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "NewOwner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x04ec1391919405ed84fbf6d27c8e7e735a4ecc71",
+      "updated_at": 1496834155466
+    },
+    "1496889948266": {
+      "events": {
+        "0x5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d57": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleRegistered",
+          "type": "event"
+        },
+        "0x52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "OldOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "NewOwner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xebb3e2585454d7c1beee689115b70557df10d83f",
+      "updated_at": 1496889970637
+    },
+    "1496891765197": {
+      "events": {
+        "0x5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d57": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleRegistered",
+          "type": "event"
+        },
+        "0x52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "OldOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "NewOwner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x95c44e3dc882c5b507fc1e3feb6d551e5ed56845",
+      "updated_at": 1496891778952
+    },
+    "1496976737431": {
+      "events": {
+        "0x5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d57": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleRegistered",
+          "type": "event"
+        },
+        "0x52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "OldOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "NewOwner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xa9948d8f1ce535c6d776f5f1f2fa0334e90f24c7",
+      "updated_at": 1496976754647
+    },
+    "1496976990847": {
+      "events": {
+        "0x5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d57": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleRegistered",
+          "type": "event"
+        },
+        "0x52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "OldOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "NewOwner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x5e404f9703534b58b5c79ccdf8cb8ffd214aac4f",
+      "updated_at": 1496977003763
+    },
+    "1497824485413": {
+      "events": {
+        "0x5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d57": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleRegistered",
+          "type": "event"
+        },
+        "0x52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "OldOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "NewOwner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x224fd614d0a587857e01214481a19d0c3059f79e",
+      "updated_at": 1497824517642
+    },
+    "1497825263389": {
+      "events": {
+        "0x5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d57": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleRegistered",
+          "type": "event"
+        },
+        "0x52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "OldOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "NewOwner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x5b8bd1861543f4409fc120313e050d712ee27aa0",
+      "updated_at": 1497827140781
+    },
+    "1497827315517": {
+      "events": {
+        "0x5f392c61d263d5e43db807b3b3eb4fec5e7bd977dd126fae15e5f4263ade1d57": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleRegistered",
+          "type": "event"
+        },
+        "0x52a1ea50926be2b723dca87dfb94f131e588b37cf44a15749e2c5c362c00f4e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "OldOwner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "NewOwner",
+              "type": "address"
+            }
+          ],
+          "name": "VehicleTransferred",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x816a5ae151b0b11e7e019665df578a70823974fa",
+      "updated_at": 1497827334155
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1497827334155
+}
